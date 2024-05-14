@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import './Constants/stylingConstants.dart' as Styles;
 import 'Components/footer.dart' as footer;
-import 'Components/CardComponents.dart' as cards;
+import 'Components/CardComponents.dart' as store;
 
 void main() {
-  runApp(myApp());
+  runApp(MyApp());
 }
 
-class myApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,13 +57,13 @@ class myHomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              cards.ProductCard(
+              store.ProductCard(
                 imageUrl:
                     'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
                 productName: 'Sample Product 1',
                 price: 19.99,
               ),
-              cards.ProductCard(
+              store.ProductCard(
                 imageUrl:
                     'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
                 productName: 'Sample Product 2',
@@ -79,6 +79,6 @@ class myHomePage extends StatelessWidget {
 
 
 
-/**************** */
+/*********** */
 
 
