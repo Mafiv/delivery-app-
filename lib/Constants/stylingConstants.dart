@@ -71,7 +71,7 @@ const Text startingText = Text(
 );
 
 const Text signupDetail = Text(
-  'creare Account for free',
+  'Create Account for free',
   style: TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.bold,
