@@ -4,10 +4,10 @@ import 'Components/footer.dart' as footer;
 import 'Components/CardComponents.dart' as cards;
 
 void main() {
-  runApp(myApp());
+  runApp(MyApp());
 }
 
-class myApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,7 +72,6 @@ class myHomePage extends StatelessWidget {
             ],
           ),
         ),
-        
         bottomNavigationBar: footer.CustomBottomNavigationBar());
   }
 }
