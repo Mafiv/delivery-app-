@@ -52,6 +52,12 @@ const InputDecoration usernameDecorate = InputDecoration(
   prefixIcon: Icon(Icons.email, color: superColor),
 );
 
+const InputDecoration phoneNumberDecoration = InputDecoration(
+  labelText: 'Phone Number',
+  border: OutlineInputBorder(),
+  prefixIcon: Icon(Icons.phone, color: superColor),
+);
+
 const Text Option = Text('Don’t have an account?');
 const Text signUp_option = Text(
   'Sign up',
@@ -120,3 +126,5 @@ const Text loginAppBarText =
     Text('Login', style: TextStyle(color: Colors.white));
 const Text signupAppBarText =
     Text('Sign up', style: TextStyle(color: Colors.white));
+
+/*for customer Information Page */

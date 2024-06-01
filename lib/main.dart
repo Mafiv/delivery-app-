@@ -6,6 +6,9 @@ import 'pages/Orders.dart' as order;
 import 'pages/Cart.dart' as carts;
 import 'pages/LoginPage.dart' as Login_Page;
 import 'pages/SignUp.dart' as SignUp_Page;
+import './pages/CustomerInformation.dart' as CustomerInfo;
+import './pages/SearchedProducts.dart' as SearchedProducts;
+import './pages/ProfilePage.dart' as ProfilePage;
 
 void main() {
   runApp(MyApp());
@@ -14,17 +17,40 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: myHomePage(), routes: {
-      '/loginPage': (context) => Login_Page.LoginPage(),
-      '/signupPage': (context) => SignUp_Page.SignUpPage(),
-      '/gotoHome': (context) => MyApp(),
-      '/gotocartpage': (context) => const carts.Cart(),
-      '/gotoOrderpage': (context) => const order.OrderGrid(),
-    });
+    return MaterialApp(
+      home: myHomePage(),
+      routes: {
+        '/loginPage': (context) => Login_Page.LoginPage(),
+        '/signupPage': (context) => SignUp_Page.SignUpPage(),
+        '/gotoHome': (context) => MyApp(),
+        '/gotocartpage': (context) => const carts.Cart(),
+        '/gotoOrderpage': (context) => const order.OrderGrid(customerId: 123),
+        '/gotoProfile': (context) => ProfilePage.ProfilePage(),
+      },
+    );
   }
 }
 
-class myHomePage extends StatelessWidget {
+class myHomePage extends StatefulWidget {
+  @override
+  _myHomePageState createState() => _myHomePageState();
+}
+
+class _myHomePageState extends State<myHomePage> {
+  TextEditingController _searchController = TextEditingController();
+
+  void _searchProducts() {
+    String searchText = _searchController.text;
+    if (searchText.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SearchedProducts.ProductCard(searchQuery: searchText),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +60,10 @@ class myHomePage extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search...',
-                  hintStyle:Styles.toHintText,
+                  hintStyle: Styles.toHintText,
                   filled: true,
                   fillColor: Styles.toFillSearchArea,
                   border: OutlineInputBorder(
@@ -51,27 +78,24 @@ class myHomePage extends StatelessWidget {
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  
                   contentPadding: Styles.toPadding,
                 ),
                 style: Styles.inputStyle,
                 onSubmitted: (value) {
-                  // Handle the search logic here
-                  print('Search text: $value');
+                  _searchProducts();
                 },
               ),
             ),
             IconButton(
-              icon:Styles.SearchIconStyle,
+              icon: Styles.SearchIconStyle,
               onPressed: () {
-                // Handle the search icon press logic here
-                print('Search icon pressed');
+                _searchProducts();
               },
             ),
           ],
         ),
       ),
-      body: const Center(
+      body: Center(
         child: Products.ProductCard(),
       ),
       bottomNavigationBar: footer.CustomBottomNavigationBar(),
