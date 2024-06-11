@@ -47,7 +47,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.account_circle),
                 onPressed: () {
-                  Navigator.pushNamed(context,'/gotoProfile');
+                  Navigator.pushNamed(context,'/loginPage');
 
                   /***************** */
                 },

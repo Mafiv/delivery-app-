@@ -5,7 +5,6 @@ class OrderCard extends StatelessWidget {
   final double price;
   final String status;
   final String imageUrl;
-  final int orderId;
 
   const OrderCard({
     Key? key,
@@ -13,7 +12,6 @@ class OrderCard extends StatelessWidget {
     required this.price,
     required this.status,
     required this.imageUrl,
-    required this.orderId,
   }) : super(key: key);
 
   @override
@@ -50,26 +48,20 @@ class OrderCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end, 
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                       decoration: BoxDecoration(
-                        color: status == 'Delivered'
-                            ? Color.fromARGB(255, 118, 20, 133)
-                            : Colors.orange,
-                        borderRadius: BorderRadius.circular(
-                            16), // Adjust the radius as needed
+                        color: status == 'Delivered' ? Color.fromARGB(255, 118, 20, 133) : Colors.orange,
+                        borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
                       ),
                       child: Text(
                         status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: status == 'Delivered'
-                              ? Colors.white
-                              : Colors.black,
+                          color: status == 'Delivered' ? Colors.white : Colors.black,
                         ),
                       ),
                     ),
@@ -80,7 +72,7 @@ class OrderCard extends StatelessWidget {
                   '\$${price.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Color.fromARGB(255, 119, 5, 113),
+                    color:  Color.fromARGB(255, 119, 5, 113),
                   ),
                 ),
               ],
