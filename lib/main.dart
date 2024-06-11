@@ -64,6 +64,7 @@ class _myHomePageState extends State<myHomePage> {
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   hintStyle:Styles.toHintText,
+                  hintStyle:Styles.toHintText,
                   filled: true,
                   fillColor: Styles.toFillSearchArea,
                   border: OutlineInputBorder(
@@ -79,6 +80,7 @@ class _myHomePageState extends State<myHomePage> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   
+                  
                   contentPadding: Styles.toPadding,
                 ),
                 style: Styles.inputStyle,
@@ -88,6 +90,7 @@ class _myHomePageState extends State<myHomePage> {
               ),
             ),
             IconButton(
+              icon:Styles.SearchIconStyle,
               icon:Styles.SearchIconStyle,
               onPressed: () {
                 _searchProducts();
@@ -146,5 +149,26 @@ class _myHomePageState extends State<myHomePage> {
         
         bottomNavigationBar: footer.CustomBottomNavigationBar());
 >>>>>>> 4f987d97e37d71400c78d1f05367bf95baa5c668
+        body: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              cards.ProductCard(
+                imageUrl:
+                    'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
+                productName: 'Sample Product 1',
+                price: 19.99,
+              ),
+              cards.ProductCard(
+                imageUrl:
+                    'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
+                productName: 'Sample Product 2',
+                price: 24.99,
+              ),
+            ],
+          ),
+        ),
+        
+        bottomNavigationBar: footer.CustomBottomNavigationBar());
   }
 }
