@@ -64,7 +64,7 @@ class myHomePage extends StatelessWidget {
               icon: Styles.SearchIconStyle,
               onPressed: () {
                 // Handle the search icon press logic here
-                print('Search icon pressed');
+                print('search icon pressed');
               },
             ),
           ],
