@@ -82,7 +82,7 @@ class _CartState extends State<Cart> {
   }
 
 /***************** */
-  void Order_now(String Name, double Price, int ID) {
+  void Order_now(String Name, double Price, int ID,int cartId) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -90,6 +90,7 @@ class _CartState extends State<Cart> {
           productName: Name,
           productId: ID.toString(),
           price: Price,
+          cartId: cartId,
         ),
       ),
     );
@@ -164,7 +165,7 @@ class _CartState extends State<Cart> {
                   productId: item.productId,
                   onOrderPressed: () {
                     Order_now(
-                        item.productName, item.productPrice, item.productId);
+                        item.productName, item.productPrice, item.productId,item.cartItemId);
                     /* onPressed: () {
                           Navigator.push(
                             context,

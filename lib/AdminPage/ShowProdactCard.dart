@@ -28,6 +28,7 @@ class ShoppingCard extends StatelessWidget {
     }
 
     return Container(
+      
       height: 260,
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.all(8.0),
@@ -52,7 +53,7 @@ class ShoppingCard extends StatelessWidget {
               image: DecorationImage(
                 image: imageBytes != null
                     ? MemoryImage(imageBytes)
-                    : AssetImage('assets/placeholder.png') as ImageProvider,
+                    : const  AssetImage('assets/placeholder.png') as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),

@@ -7,6 +7,9 @@
   import '../Api_Connections/Api_Connections.dart';
   import 'package:fluttertoast/fluttertoast.dart';
   import '../Constants/stylingConstants.dart' as Styles;
+  import '../AdminPage/adminFooter.dart' as adminfooter;
+  import 'package:provider/provider.dart';
+import '../Provider/userProvider.dart';
 
   class AddDeliveryPersonPage extends StatefulWidget {
     @override
@@ -83,11 +86,18 @@
           final responseBody = await response.stream.bytesToString();
           final decodedResponse = jsonDecode(responseBody);
 
+          
           if (decodedResponse['success']) {
+            final userProvider = Provider.of<UserProvider>(context, listen: false);
+             userProvider.setAdminPage(newAdminPage: 'Home');
+            
+            Navigator.of(context).pop();
+
              showMessage(context, "Sucssess",
             "Delivery person added successfully!");
-            Fluttertoast.showToast(msg: 'Delivery person added successfully!');
-            Navigator.pop(context);
+
+            // Fluttertoast.showToast(msg: 'Delivery person added successfully!');
+            // Navigator.of(context).pop();
           } else {
             Fluttertoast.showToast(msg: 'Failed to add delivery person: ${decodedResponse['error']}');
           }
@@ -155,8 +165,9 @@
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Styles.superColor)),
                   onPressed: _addDeliveryPerson,
-                  child: Text('Add Delivery Person'),
+                  child: Text('Add Delivery Person', style: TextStyle(fontSize: 20,color: Colors.white),),
                 ),
                 SizedBox(height: 20),
                 GestureDetector(
@@ -173,6 +184,7 @@
             ),
           ),
         ),
+        bottomNavigationBar: adminfooter.CustomBottomNavigationBar() ,
       );
     }
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../Api_Connections/Api_Connections.dart';
 import '../Constants/stylingConstants.dart' as style;
+import '../AdminPage/adminFooter.dart' as adminfooter;
 
 
 class OrderDetail {
@@ -180,6 +181,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           }
         },
       ),
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
     );
   }
 

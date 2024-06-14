@@ -6,7 +6,7 @@ import 'dart:convert';
 import '../Api_Connections/Api_Connections.dart';
 import '../Provider/userProvider.dart';
 import './AllOrdersToDeliver.dart' as AllOrdersToDeliver;
-
+import '../Constants/DeliveryConstants.dart' as delivery;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -89,8 +89,7 @@ class _LoginPageState extends State<LoginPage> {
   void gotocustomerOrders() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => AllOrdersToDeliver.MyApp()),
+      MaterialPageRoute(builder: (context) => AllOrdersToDeliver.MyApp()),
     );
   }
 
@@ -100,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: styles.superColor,
         title: styles.loginAppBarText,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -107,13 +107,13 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // Image.asset(
-              //   'Images/LogIn.png',
-              //   height: 200,
-              // ),
+              Image.asset(
+                'Images/delivery-peson.jpg',
+                height: 200,
+              ),
               styles.spaces,
-              styles.welcomeText,
-              styles.welcomeDetail,
+              // styles.welcomeText,
+              delivery.welcomeText,
               styles.spaces,
               TextField(
                 controller: _usernameController,

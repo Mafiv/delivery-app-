@@ -31,8 +31,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   @override
   void initState() {
     super.initState();
-    _firstNameController =
-        TextEditingController(text: widget.profile.firstName);
+    _firstNameController = TextEditingController(text: widget.profile.firstName);
     _lastNameController = TextEditingController(text: widget.profile.lastName);
     _userNameController = TextEditingController(text: widget.profile.username);
     _genderController = TextEditingController(text: widget.profile.gender);
@@ -92,7 +91,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       print(responseBody['error']);
       if (responseBody['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Profile updated successfully')));
+            const SnackBar(content: Text('Profile updated successfully')));
+
+        Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(responseBody['message'])));
@@ -107,7 +108,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Profile'),
+        title: const Text('Update Profile',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         backgroundColor: styles.superColor,
       ),
       body: Padding(
@@ -171,7 +172,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: updateProfile,
-                child: const Text('Update Profile'),
+                child: const Text('Update Profile',style: TextStyle(color: Colors.white, fontSize: 16),),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: styles.superColor),
               ),

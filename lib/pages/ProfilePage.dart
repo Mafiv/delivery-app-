@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
             context,
             MaterialPageRoute(builder: (context) => LoginPage()),
           ));
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Scaffold(
@@ -117,8 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 45),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
+                      Navigator.push(context,
                         MaterialPageRoute(
                           builder: (context) => UpdateProfilePage(
                               userId: widget.userId, profile: profile),
@@ -126,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                     child: const Text('Edit Profile',
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: styles.superColor),
                   ),
@@ -156,11 +155,11 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Text(
             label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 16),
+            style: const  TextStyle(fontSize: 16),
           ),
         ],
       ),

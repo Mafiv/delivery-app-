@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:provider/provider.dart';
@@ -93,7 +94,10 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
         final responseBody = jsonDecode(response.body);
         if (responseBody['success']) {
           print("Successful order: ${responseBody['message']}");
+            Fluttertoast.showToast(msg: "One item added to cart");
+
         } else {
+
           print("Failed order: ${responseBody['message']}");
         }
       } else {
@@ -109,11 +113,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text('Products' , style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('search result',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: styles.superColor,
       ),
       body: isLoading
@@ -135,7 +136,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                       child: ShoppingCard(
                         // imageUrl: 'data:image/jpeg;base64,${item['image']}',
                         imageUrl: item['image'].toString(),
-
 
                         productName: item['item_name'],
                         price: double.tryParse(item['price'].toString()) ?? 0.0,

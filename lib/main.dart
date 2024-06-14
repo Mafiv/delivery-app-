@@ -21,10 +21,8 @@ import 'AdminPage/adminFooter.dart' as adminfooter;
 
 /*******for the delivery person */
 
-
 import '../DeliveryPerson/AllOrdersToDeliver.dart' as AllOrdersToDeliver;
 import '../DeliveryPerson/DeliverypersonLogin.dart' as DeliveryPersonLogin;
-
 
 void main() {
   runApp(MyApp());
@@ -36,57 +34,60 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UserProvider (), 
+          create: (context) => UserProvider(),
         ),
       ],
       child: MaterialApp(
         home: myHomePage(),
         routes: {
-          
+          /***for all */
+          '/home': (context) => myHomePage(),
+
           /**admin panel */
-          '/gotoadddeliveryperson': (context) => AddDeliveryPerson.AddDeliveryPersonPage(),
+          '/gotoadddeliveryperson': (context) =>
+              AddDeliveryPerson.AddDeliveryPersonPage(),
           '/gotoaddproduct': (context) => AddProduct.ProductUploader(),
           '/gotoocustomerlist': (context) => ShowAllCustomers.CustomersList(),
           '/gotoHome': (context) => myHomePage(),
-             '/AllcustomersDetail': (context){
-            final userProvider = Provider.of<UserProvider>(context, listen: false);
+          '/AllcustomersDetail': (context) {
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false);
             if (userProvider.userId.isNotEmpty) {
               return ShowAllCustomers.CustomersList();
             } else {
               return Login_Page.LoginPage();
             }
           },
-          
 
           /****for the delivery */
-          '/gotologin':(context) => DeliveryPersonLogin.LoginPage(),
+          '/gotologin': (context) => DeliveryPersonLogin.LoginPage(),
           '/gotodetailPage': (context) => detail.OrderDetailScreen(),
           '/showAllcustomerOrders': (context) => AllOrdersToDeliver.MyApp(),
 
-          
-
           /******to customer */
-          '/gotocartpage': (context){
-            final userProvider = Provider.of<UserProvider>(context, listen: false);
+          '/gotocartpage': (context) {
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false);
             if (userProvider.userId.isNotEmpty) {
               return carts.Cart(customerId: userProvider.userId);
             } else {
               return Login_Page.LoginPage();
             }
           },
-            '/loginPage': (context) => Login_Page.LoginPage(),
+          '/loginPage': (context) => Login_Page.LoginPage(),
           '/signupPage': (context) => SignUp_Page.SignUpPage(),
           '/gotoOrderpage': (context) {
-            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false);
             if (userProvider.userId.isNotEmpty) {
               return order.OrderPage(customerId: userProvider.userId);
             } else {
               return Login_Page.LoginPage();
             }
           },
-       
           '/gotoprofilepage': (context) {
-            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            final userProvider =
+                Provider.of<UserProvider>(context, listen: false);
             if (userProvider.userId.isNotEmpty) {
               return ProfilePage.ProfilePage(userId: userProvider.userId);
             } else {
@@ -123,56 +124,60 @@ class _myHomePageState extends State<myHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Styles.superColor,
-        title: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  hintStyle: Styles.toHintText,
-                  filled: true,
-                  fillColor: Styles.toFillSearchArea,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  contentPadding: Styles.toPadding,
-                ),
-                style: Styles.inputStyle,
-                onSubmitted: (value) {
-                  _searchProducts();
-                },
-              ),
-            ),
-            IconButton(
-              icon: Styles.SearchIconStyle,
-              onPressed: () {
-                _searchProducts();
-              },
-            ),
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Styles.superColor,
+      //   title: Row(
+      //     children: [
+      //       Expanded(
+      //         child: TextField(
+      //           controller: _searchController,
+      //           decoration: InputDecoration(
+      //             hintText: 'Search...',
+      //             hintStyle: Styles.toHintText,
+      //             filled: true,
+      //             fillColor: Styles.toFillSearchArea,
+      //             border: OutlineInputBorder(
+      //               borderSide: BorderSide.none,
+      //               borderRadius: BorderRadius.circular(8.0),
+      //             ),
+      //             enabledBorder: OutlineInputBorder(
+      //               borderSide: BorderSide.none,
+      //               borderRadius: BorderRadius.circular(8.0),
+      //             ),
+      //             focusedBorder: OutlineInputBorder(
+      //               borderSide: BorderSide.none,
+      //               borderRadius: BorderRadius.circular(8.0),
+      //             ),
+      //             contentPadding: Styles.toPadding,
+      //           ),
+      //           style: Styles.inputStyle,
+      //           onSubmitted: (value) {
+      //             _searchProducts();
+      //           },
+      //         ),
+      //       ),
+      //       IconButton(
+      //         icon: Styles.SearchIconStyle,
+      //         onPressed: () {
+      //           _searchProducts();
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
+
+      
       body: Center(
-            // child:Login_Page.LoginPage(),
-            //  child:ShowAllCustomers.CustomersList(),
-             child:Products.ProductCard(),
 
+        // child: Login_Page.LoginPage(),
+
+        // child: Products.ProductCard(),
+        //  child:ShowAllProductsForAdmin.ProductPage(),
+         child:DeliveryPersonLogin.LoginPage(),
       ),
-      // bottomNavigationBar: footer.CustomBottomNavigationBar(),
+      // bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
 
-      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
-    );  
+      // bottomNavigationBar: footer.CustomBottomNavigationBar(),
+    );
   }
 }

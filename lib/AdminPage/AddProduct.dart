@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import '../Api_Connections/Api_Connections.dart';
 import '../Constants/stylingConstants.dart' as style;
+import '../AdminPage/adminFooter.dart' as adminfooter;
+import 'package:provider/provider.dart';
+import '../Provider/userProvider.dart';
 
 class ProductUploader extends StatefulWidget {
   @override
@@ -37,7 +40,7 @@ class _ProductUploaderState extends State<ProductUploader> {
   Future<void> _uploadProduct() async {
     try {
       if (_selectedImageBase64 == null) {
-        _showAlertDialog('Error', 'Please select an image.');
+        showMessage(context,'Error', 'Please select an image.');
         return;
       }
 
@@ -54,44 +57,48 @@ class _ProductUploaderState extends State<ProductUploader> {
       if (response.statusCode == 200) {
         print(response.toString());
         final responseString = await response.stream.bytesToString();
-        print(responseString);
-        _showAlertDialog('Success', 'Product uploaded successfully!');
-            Navigator.pop(context);
-
+        // print(responseString);
+        
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setAdminPage(newAdminPage: 'Home');
+        Navigator.pop(context);
+        showMessage(context,'Success', 'Product uploaded successfully!');
+       
       } else {
         throw Exception('Failed to upload product: ${response.statusCode}');
       }
     } catch (e) {
-      _showAlertDialog('Error', 'An error occurred: $e');
+      showMessage(context,'Error', 'An error occurred: $e');
     }
   }
-
-  void _showAlertDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+  void showMessage(BuildContext context, String title, String message) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
         title: Text(title),
         content: Text(message),
-        actions: [
+        actions: <Widget>[
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
           ),
         ],
-      ),
-    );
-  }
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Delivery Person', style: TextStyle(color: Colors.white, fontSize: 20),),
-        backgroundColor: style.superColor,
-
+        title: Text(
+          'Add Product ',
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
+        backgroundColor: style.superColor,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20.0),
@@ -108,10 +115,17 @@ class _ProductUploaderState extends State<ProductUploader> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: 'Price'),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 40),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[800],
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                ),
                 onPressed: _pickImage,
-                child: Text('Select Image', style: TextStyle(color: Colors.black),),
+                child: Text(
+                  'Select Image',
+                  style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 20),
+                ),
               ),
               SizedBox(height: 20),
               _selectedImageBase64 != null
@@ -127,13 +141,20 @@ class _ProductUploaderState extends State<ProductUploader> {
                   : Container(),
               SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: style.superColor,
+                ),
                 onPressed: _uploadProduct,
-                child: Text('Upload Product', style: TextStyle(color: Colors.black),),
+                child: Text(
+                  'Upload Product',
+                  style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 20),
+                ),
               ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
     );
   }
 }

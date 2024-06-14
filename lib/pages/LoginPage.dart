@@ -42,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
           final userId = data["user_id"];
           
           Provider.of<UserProvider>(context, listen: false).setUserName(newUserId: userId.toString());
+          Provider.of<UserProvider>(context, listen: false).setCurrentPage(newCurrentPage: 'Home');
+
 
           Navigator.pushNamed(context, '/gotoHome');
         } else {

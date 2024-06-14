@@ -8,11 +8,14 @@ import 'package:provider/provider.dart';
 import '../Provider/userProvider.dart';
 import '../pages/LoginPage.dart' as Login;
 
+
 class ProductCard extends StatefulWidget {
   const ProductCard({Key? key}) : super(key: key);
 
+
   @override
   _ProductCardState createState() => _ProductCardState();
+  
 }
 
 class _ProductCardState extends State<ProductCard> {
@@ -125,3 +128,4 @@ class _ProductCardState extends State<ProductCard> {
     );
   }
 }
+

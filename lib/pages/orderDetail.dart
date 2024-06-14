@@ -42,8 +42,8 @@ Future<void> deleteFromCartNow(BuildContext context, dynamic cartId) async {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['success']) {
-        showMessage(context, "Deleted",
-            "Item deleted successfully. Reload to see changes!");
+        showMessage(context, "Congratulations",
+            "Your order has been successfully placed and will be delivered soon!!");
         print("Item deleted successfully");
       } else {
         print("Failed to delete item:");
@@ -58,7 +58,7 @@ Future<void> deleteFromCartNow(BuildContext context, dynamic cartId) async {
 }
 
 Future<void> placeAnOrder(
-    BuildContext context, String location, String productId) async {
+    BuildContext context, String location, String productId, dynamic cartId) async {
   try {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     String customerId = userProvider.userId;
@@ -82,8 +82,7 @@ Future<void> placeAnOrder(
         // deleteFromCartNow(context,)
 
         Navigator.pushNamed(context, '/gotocartpage');
-        showMessage(context, "Congratulations",
-            "Your order has been successfully placed and will be delivered soon!!");
+        deleteFromCartNow(context, cartId);
       } else {
         Fluttertoast.showToast(msg: "Your order is not saved");
         print("Failed to place order:");
@@ -101,12 +100,14 @@ class OrderDetailPage extends StatelessWidget {
   final String productId;
   final String productName;
   final double price;
+  final int cartId;
 
   OrderDetailPage({
     Key? key,
     required this.productId,
     required this.productName,
     required this.price,
+    required this.cartId,
   }) : super(key: key);
 
   @override
@@ -135,23 +136,24 @@ class OrderDetailPage extends StatelessWidget {
             children: [
               Text(
                 'Product Name: $productName',
-                style: TextStyle(
-                  fontSize: 20,
+                style: const TextStyle(
+                  fontSize: 23,
                   fontWeight: FontWeight.bold,
+                  
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 '\$${price.toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[700],
+                style: const TextStyle(
+                  fontSize: 20  ,
+                  color: styles.superColor,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: addressController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Address',
                   border: OutlineInputBorder(),
                 ),
@@ -181,19 +183,31 @@ class OrderDetailPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 134, 5, 5),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('Cancel'),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: styles.superColor,
+                    ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         placeAnOrder(
-                            context, addressController.text, productId);
+                            context, addressController.text, productId, cartId);
                       }
                     },
-                    child: Text('Place Order'),
+                    child: Text(
+                      'Place Order',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
