@@ -39,7 +39,7 @@ class _CustomersListState extends State<CustomersList> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Customers List',
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
