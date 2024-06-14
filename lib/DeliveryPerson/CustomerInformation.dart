@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../Constants/DeliveryConstants.dart' as Styles;
-import '../Components/informationRow.dart' as InformationRow;
+import 'informationRow.dart' as InformationRow;
 import '../Models/Customer.dart' as store;
 import '../Constants/stylingConstants.dart' as styles;
 import '../Api_Connections/Api_Connections.dart';

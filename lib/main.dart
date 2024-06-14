@@ -166,8 +166,8 @@ class _myHomePageState extends State<myHomePage> {
       ),
       body: Center(
             // child:Login_Page.LoginPage(),
-             child:ShowAllCustomers.CustomersList(),
-            //  child:Products.ProductCard(),
+            //  child:ShowAllCustomers.CustomersList(),
+             child:Products.ProductCard(),
 
       ),
       // bottomNavigationBar: footer.CustomBottomNavigationBar(),

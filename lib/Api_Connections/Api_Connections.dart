@@ -1,6 +1,6 @@
 class API {
   
-  static const hostConnect = "http://10.240.212.215";
+  static const hostConnect = "http://10.240.136.121";
 
 //for customer
   static const orderApi = "$hostConnect/Delivary_app_project/order/Save_orders.php";
