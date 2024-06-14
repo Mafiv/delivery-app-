@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'Provider/userProvider.dart';
 import './Constants/stylingConstants.dart' as Styles;
 import 'Components/footer.dart' as footer;
 import 'Components/Products.dart' as Products;
@@ -6,9 +8,23 @@ import 'pages/Orders.dart' as order;
 import 'pages/Cart.dart' as carts;
 import 'pages/LoginPage.dart' as Login_Page;
 import 'pages/SignUp.dart' as SignUp_Page;
-import './pages/CustomerInformation.dart' as CustomerInfo;
 import './pages/SearchedProducts.dart' as SearchedProducts;
 import './pages/ProfilePage.dart' as ProfilePage;
+/**************for admin  */
+
+import '../AdminPage/ShowAllProducts.dart' as ShowAllProductsForAdmin;
+import 'AdminPage/AddDeliveryperson.dart' as AddDeliveryPerson;
+import 'AdminPage/ShowAllCustomers.dart' as ShowAllCustomers;
+import 'AdminPage/AddProduct.dart' as AddProduct;
+import 'AdminPage/detail.dart' as detail;
+import 'AdminPage/adminFooter.dart' as adminfooter;
+
+/*******for the delivery person */
+
+
+import '../DeliveryPerson/AllOrdersToDeliver.dart' as AllOrdersToDeliver;
+import '../DeliveryPerson/DeliverypersonLogin.dart' as DeliveryPersonLogin;
+
 
 void main() {
   runApp(MyApp());
@@ -17,16 +33,68 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: myHomePage(),
-      routes: {
-        '/loginPage': (context) => Login_Page.LoginPage(),
-        '/signupPage': (context) => SignUp_Page.SignUpPage(),
-        '/gotoHome': (context) => MyApp(),
-        '/gotocartpage': (context) => const carts.Cart(),
-        '/gotoOrderpage': (context) => const order.OrderGrid(customerId: 123),
-        '/gotoProfile': (context) => ProfilePage.ProfilePage(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider (), 
+        ),
+      ],
+      child: MaterialApp(
+        home: myHomePage(),
+        routes: {
+          
+          /**admin panel */
+          '/gotoadddeliveryperson': (context) => AddDeliveryPerson.AddDeliveryPersonPage(),
+          '/gotoaddproduct': (context) => AddProduct.ProductUploader(),
+          '/gotoocustomerlist': (context) => ShowAllCustomers.CustomersList(),
+          '/gotoHome': (context) => myHomePage(),
+             '/AllcustomersDetail': (context){
+            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            if (userProvider.userId.isNotEmpty) {
+              return ShowAllCustomers.CustomersList();
+            } else {
+              return Login_Page.LoginPage();
+            }
+          },
+          
+
+          /****for the delivery */
+          '/gotologin':(context) => DeliveryPersonLogin.LoginPage(),
+          '/gotodetailPage': (context) => detail.OrderDetailScreen(),
+          '/showAllcustomerOrders': (context) => AllOrdersToDeliver.MyApp(),
+
+          
+
+          /******to customer */
+          '/gotocartpage': (context){
+            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            if (userProvider.userId.isNotEmpty) {
+              return carts.Cart(customerId: userProvider.userId);
+            } else {
+              return Login_Page.LoginPage();
+            }
+          },
+            '/loginPage': (context) => Login_Page.LoginPage(),
+          '/signupPage': (context) => SignUp_Page.SignUpPage(),
+          '/gotoOrderpage': (context) {
+            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            if (userProvider.userId.isNotEmpty) {
+              return order.OrderPage(customerId: userProvider.userId);
+            } else {
+              return Login_Page.LoginPage();
+            }
+          },
+       
+          '/gotoprofilepage': (context) {
+            final userProvider = Provider.of<UserProvider>(context, listen: false);
+            if (userProvider.userId.isNotEmpty) {
+              return ProfilePage.ProfilePage(userId: userProvider.userId);
+            } else {
+              return Login_Page.LoginPage();
+            }
+          },
+        },
+      ),
     );
   }
 }
@@ -45,7 +113,8 @@ class _myHomePageState extends State<myHomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SearchedProducts.ProductCard(searchQuery: searchText),
+          builder: (context) =>
+              SearchedProducts.ProductSearchPage(searchQuery: searchText),
         ),
       );
     }
@@ -94,35 +163,16 @@ class _myHomePageState extends State<myHomePage> {
             ),
           ],
         ),
-<<<<<<< HEAD
       ),
       body: Center(
-        child: Products.ProductCard(),
+            // child:Login_Page.LoginPage(),
+             child:ShowAllCustomers.CustomersList(),
+            //  child:Products.ProductCard(),
+
       ),
-      bottomNavigationBar: footer.CustomBottomNavigationBar(),
-    );
-=======
-        body: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              cards.ProductCard(
-                imageUrl:
-                    'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
-                productName: 'Sample Product 1',
-                price: 19.99,
-              ),
-              cards.ProductCard(
-                imageUrl:
-                    'https://t4.ftcdn.net/jpg/01/43/23/83/360_F_143238306_lh0ap42wgot36y44WybfQpvsJB5A1CHc.jpg',
-                productName: 'Sample Product 2',
-                price: 24.99,
-              ),
-            ],
-          ),
-        ),
-        
-        bottomNavigationBar: footer.CustomBottomNavigationBar());
->>>>>>> 4f987d97e37d71400c78d1f05367bf95baa5c668
+      // bottomNavigationBar: footer.CustomBottomNavigationBar(),
+
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
+    );  
   }
 }

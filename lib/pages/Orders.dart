@@ -1,43 +1,53 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../Components/OrderCard.dart';
 import '../Constants/stylingConstants.dart' as styles;
 import '../Components/footer.dart' as footer;
+import '../Api_Connections/Api_Connections.dart';
+import '../Models/CustomerOrderModel.dart';
 
-class OrderGrid extends StatefulWidget {
-  final int customerId; // New field to store customer ID
-  const OrderGrid({Key? key, required this.customerId}) : super(key: key);
+class OrderPage extends StatefulWidget {
+  final String customerId;
+
+  const OrderPage({Key? key, required this.customerId}) : super(key: key);
+  // const OrderPage({Key? key}) : super(key: key);
 
   @override
-  _OrderGridState createState() => _OrderGridState();
+  _OrderPageState createState() => _OrderPageState();
 }
 
-class _OrderGridState extends State<OrderGrid> {
-  List<OrderData> _orders = [];
+class _OrderPageState extends State<OrderPage> {
+  late Future<List<OrderItemData>> futureOrderItems;
 
   @override
   void initState() {
     super.initState();
-    _fetchOrders();
+    futureOrderItems = fetchOrderItems(widget.customerId);
   }
 
-  Future<void> _fetchOrders() async {
-    try {
-      final response = await http.get(Uri.parse('YOUR_API_ENDPOINT?customerId=${widget.customerId}')); // Pass customer ID to the API endpoint
+  Future<List<OrderItemData>> fetchOrderItems(String customerId) async {
+    final response = await http.post(
+      Uri.parse(API.showAllOrder),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'customerId': customerId,
+      },
+    );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        setState(() {
-          _orders = data.map((item) => OrderData.fromJson(item)).toList();
-        });
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody is List) {
+        return responseBody
+            .map((item) => OrderItemData.fromJson(item))
+            .toList();
       } else {
-        // Handle server error
-        print('Failed to fetch orders: ${response.statusCode}');
+        throw Exception('No orders found for the specified customer ID');
       }
-    } catch (error) {
-      // Handle network error
-      print('Error fetching orders: $error');
+    } else {
+      throw Exception('Failed to load orders');
     }
   }
 
@@ -50,52 +60,36 @@ class _OrderGridState extends State<OrderGrid> {
         leading: IconButton(
           icon: styles.backIcon,
           onPressed: () {
-            Navigator.pop(context); 
+            Navigator.pop(context);
           },
         ),
       ),
-      body: _orders.isEmpty
-          ? const Center(child: CircularProgressIndicator()) 
-          : ListView.builder(
-              itemCount: _orders.length,
+      body: FutureBuilder<List<OrderItemData>>(
+        future: futureOrderItems,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No orders found'));
+          } else {
+            List<OrderItemData> orderItems = snapshot.data!;
+            return ListView.builder(
+              itemCount: orderItems.length,
               itemBuilder: (context, index) {
-                final order = _orders[index];
-                return OrderCard(
-                  orderId: order.orderId,
-                  productName: order.productName,
-                  price: order.price,
-                  status: order.status,
-                  imageUrl: order.imageUrl,
+                OrderItemData item = orderItems[index];
+                return OrderItem(
+                  imageUrl: item.productImage,
+                  productName: item.productName,
+                  status: item.orderStatus,
                 );
               },
-            ),
+            );
+          }
+        },
+      ),
       bottomNavigationBar: footer.CustomBottomNavigationBar(),
-    );
-  }
-}
-
-class OrderData {
-  final int orderId;
-  final String productName;
-  final double price;
-  final String status;
-  final String imageUrl;
-
-  OrderData({
-    required this.orderId,
-    required this.productName,
-    required this.price,
-    required this.status,
-    required this.imageUrl,
-  });
-
-  factory OrderData.fromJson(Map<String, dynamic> json) {
-    return OrderData(
-      orderId: json['orderId'],
-      productName: json['productName'],
-      price: json['productPrice'],
-      status: json['orderStatus'],
-      imageUrl: json['productImage'],
     );
   }
 }

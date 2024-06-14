@@ -4,7 +4,9 @@ import '../Constants/stylingConstants.dart' as styles;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Api_Connections/Api_Connections.dart';
-import '../Provider/userProvider.dart'; 
+import '../Provider/userProvider.dart';
+import './AllOrdersToDeliver.dart' as AllOrdersToDeliver;
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,11 +21,9 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
 
-  
-    final url = API.Login;
+    final url = API.DeliveryLogin;
 
     try {
-      // Send the HTTP POST request
       final response = await http.post(
         Uri.parse(url),
         headers: {"Accept": "application/json"},
@@ -34,31 +34,41 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (response.statusCode == 200) {
-        // print("response is correct");
-        // print(response.body.toString());
         dynamic data = jsonDecode(response.body);
         if (data["success"] == true) {
           print('Login successful, user ID: ${data["user_id"]}');
           final userId = data["user_id"];
-          
-          Provider.of<UserProvider>(context, listen: false).setUserName(newUserId: userId.toString());
 
-          Navigator.pushNamed(context, '/gotoHome');
+          Provider.of<UserProvider>(context, listen: false)
+              .setDeliveryPersonName(newDeliveryPersonId: userId.toString());
+
+          final userProvider =
+              Provider.of<UserProvider>(context, listen: false);
+          if (userProvider.deliveryPersonId.isNotEmpty) {
+            print("delivery person loged sussefully  " +
+                userProvider.deliveryPersonId);
+          } else {
+            print("is not seting the value");
+          }
+
+          gotocustomerOrders();
         } else {
           print('Login failed: ${data["message"]}');
-          showErrorDialog(context, 'Login failed', data["message"]);
+          showmessage(context, 'Login failed', data["message"]);
         }
       } else {
         print('Server error: ${response.statusCode}');
-        showErrorDialog(context, 'Server error', 'Failed to connect to the server. Please try again later.');
+        showmessage(context, 'Server error',
+            'Failed to connect to the server. Please try again later.');
       }
     } catch (e) {
       print('Network error: $e');
-      showErrorDialog(context, 'Network error', 'Failed to connect to the server. Please check your internet connection.');
+      showmessage(context, 'Network error',
+          'Failed to connect to the server. Please check your internet connection.');
     }
   }
 
-  void showErrorDialog(BuildContext context, String title, String message) {
+  void showmessage(BuildContext context, String title, String message) {
     showDialog(
       context: context,
       builder: (context) {
@@ -76,12 +86,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void goTosignUpPage() {
-    Navigator.pushNamed(context, '/signupPage');
-  }
-
-  void goToHomePage() {
-    Navigator.pushNamed(context, '/gotoHome');
+  void gotocustomerOrders() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AllOrdersToDeliver.MyApp()),
+    );
   }
 
   @override
@@ -90,12 +100,6 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: styles.superColor,
         title: styles.loginAppBarText,
-        leading: IconButton(
-          icon: styles.backIcon,
-          onPressed: () {
-            goToHomePage();
-          },
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -103,10 +107,10 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(
-                'Images/LogIn.png',
-                height: 200,
-              ),
+              // Image.asset(
+              //   'Images/LogIn.png',
+              //   height: 200,
+              // ),
               styles.spaces,
               styles.welcomeText,
               styles.welcomeDetail,
@@ -130,20 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(16.0),
                   ),
                   onPressed: log_in,
-                  child: const Text('Login', style: TextStyle(color: Colors.white)),
+                  child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ),
               styles.spaces,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  styles.Option,
-                  TextButton(
-                    onPressed: goTosignUpPage,
-                    child: styles.signUp_option,
-                  ),
-                ],
-              ),
             ],
           ),
         ),

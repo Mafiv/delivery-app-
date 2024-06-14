@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class OrderCard extends StatelessWidget {
-  final String productName;
-  final double price;
-  final String status;
+class OrderItem extends StatelessWidget {
   final String imageUrl;
-  final int orderId;
+  final String productName;
+  final String status;
 
-  const OrderCard({
+  const OrderItem({
     Key? key,
-    required this.productName,
-    required this.price,
-    required this.status,
     required this.imageUrl,
-    required this.orderId,
+    required this.productName,
+    required this.status,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 120,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -36,6 +33,19 @@ class OrderCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.memory(
+              base64Decode(imageUrl),
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.error, size: 80);
+              },
+            ),
+          ),
+          const SizedBox(width: 15),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,60 +53,55 @@ class OrderCard extends StatelessWidget {
               children: [
                 Text(
                   productName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: status == 'Delivered'
-                            ? Color.fromARGB(255, 118, 20, 133)
-                            : Colors.orange,
-                        borderRadius: BorderRadius.circular(
-                            16), // Adjust the radius as needed
-                      ),
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: status == 'Delivered'
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 9),
-                Text(
-                  '\$${price.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color.fromARGB(255, 119, 5, 113),
-                  ),
-                ),
+                Center(child: StatusButton(status: status)),
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageUrl,
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-            ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class StatusButton extends StatelessWidget {
+  final String status;
+
+  const StatusButton({
+    Key? key,
+    required this.status,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Color buttonColor;
+    if (status.toLowerCase() == 'pending') {
+      buttonColor = Colors.orange;
+    } else {
+      buttonColor = Colors.green;
+    }
+
+    return Container(
+      height: 35,
+      width: 120,
+      // padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: buttonColor,
+      ),
+      child: Center(
+        child: Text(
+          status.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

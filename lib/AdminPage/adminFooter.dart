@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Constants/stylingConstants.dart' as style;
 import '../pages/ProfilePage.dart' as ProfilePage;
-
+ 
 class CustomBottomNavigationBar extends StatelessWidget {
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,15 @@ class CustomBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/gotoHome');
-                  /***************** */
+                    // Navigator.pushNamed(context,'/gotoprofilepage');
                 },
-                color: style.superColor,
+                color:style.superColor,
                 iconSize: 30.0,
               ),
               IconButton(
-                icon: const Icon(Icons.shopping_cart),
+                icon: const  Icon(Icons.category),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/gotocartpage');
+                  Navigator.pushNamed(context,'/gotodetailPage');
 
                   /***************** */
                 },
@@ -37,19 +36,30 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 iconSize: 30.0,
               ),
               IconButton(
-                icon: const Icon(Icons.favorite),
+                icon: const Icon(Icons.people),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/gotoOrderpage');
+                Navigator.pushNamed(context,'/gotoocustomerlist');
+
+                },
+                color: Colors.grey,
+                iconSize: 30.0,
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () {
+                   Navigator.pushNamed(context,'/gotoadddeliveryperson');
+                 
 
                   /***************** */
                 },
                 color: Colors.grey,
                 iconSize: 30.0,
               ),
-              IconButton(
-                icon: Icon(Icons.account_circle),
+                 IconButton(
+                icon: Icon(Icons.add),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/gotoprofilepage');
+                  Navigator.pushNamed(context,'/gotoaddproduct');
+                 
 
                   /***************** */
                 },

@@ -7,14 +7,14 @@ class ShoppingCard extends StatelessWidget {
   final String imageUrl;
   final String productName;
   final double price;
-  final VoidCallback? onAddToCart;
+  final VoidCallback? Edit;
 
   const ShoppingCard({
     Key? key,
     required this.imageUrl,
     required this.productName,
     required this.price,
-    this.onAddToCart,
+    this.Edit,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class ShoppingCard extends StatelessWidget {
 
     Uint8List? imageBytes;
     if (imageUrl.isNotEmpty) {
-      final header = 'data:image/jpeg;base64,';
+      final  header = 'data:image/jpeg;base64,';
       final base64Image = imageUrl.replaceFirst(header, '');
       imageBytes = base64Decode(base64Image);
     }
@@ -78,11 +78,7 @@ class ShoppingCard extends StatelessWidget {
                   color:Styles.superColor,
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.shopping_cart),
-                color: Color.fromARGB(255, 0, 0, 0),
-                onPressed: onAddToCart ?? () {},
-              ),
+             
             ],
           ),
         ],
