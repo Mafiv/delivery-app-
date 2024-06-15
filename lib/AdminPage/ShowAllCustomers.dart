@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../Api_Connections/Api_Connections.dart';
 import '../Constants/stylingConstants.dart' as style;
 import '../Models/AllcustomerModel.dart';
-
+import '../AdminPage/adminFooter.dart' as adminfooter;
 
 class CustomersList extends StatefulWidget {
   @override
@@ -39,7 +39,7 @@ class _CustomersListState extends State<CustomersList> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Customers List',
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
@@ -62,6 +62,7 @@ class _CustomersListState extends State<CustomersList> {
           }
         },
       ),
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar() ,
     );
   }
 

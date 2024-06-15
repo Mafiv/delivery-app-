@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class CartItem extends StatelessWidget {
   final String imageUrl;
   final String productName;
   final double price;
+  final int productId;
   final VoidCallback onOrderPressed;
   final VoidCallback onRemovePressed;
 
@@ -12,6 +14,7 @@ class CartItem extends StatelessWidget {
     required this.imageUrl,
     required this.productName,
     required this.price,
+    required this.productId,
     required this.onOrderPressed,
     required this.onRemovePressed,
   }) : super(key: key);
@@ -34,7 +37,7 @@ class CartItem extends StatelessWidget {
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Column(
@@ -47,25 +50,24 @@ class CartItem extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                   
                     IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: onRemovePressed,
                       color: const Color.fromARGB(255, 145, 10, 1),
                       iconSize: 30,
                     ),
-                    const SizedBox(width: 80),
-
-                      Container(
+                    const Spacer(),
+                    Container(
                       height: 35,
                       decoration: BoxDecoration(
-          
-                        borderRadius: BorderRadius.circular(12), 
-                        color: Color.fromARGB(255, 83, 0, 69),
+                        borderRadius: BorderRadius.circular(12),
+                        color: const Color.fromARGB(255, 83, 0, 69),
                       ),
                       child: TextButton(
                         onPressed: onOrderPressed,
@@ -75,7 +77,6 @@ class CartItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    
                   ],
                 ),
                 const SizedBox(height: 9),
@@ -93,8 +94,8 @@ class CartItem extends StatelessWidget {
           const SizedBox(width: 15),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageUrl,
+            child: Image.memory(
+              base64Decode(imageUrl),
               width: 80,
               height: 80,
               fit: BoxFit.cover,

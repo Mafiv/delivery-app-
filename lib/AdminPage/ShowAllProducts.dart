@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../Provider/userProvider.dart';
 import 'adminFooter.dart' as adminfooter;
 import '../pages/LoginPage.dart' as Login;
+import '../Constants/stylingConstants.dart' as styles;
 
 class ProductCard extends StatefulWidget {
   const ProductCard({Key? key}) : super(key: key);
@@ -25,8 +26,6 @@ class _ProductCardState extends State<ProductCard> {
     fetchItems();
   }
 
-
-
   Future<void> fetchItems() async {
     final response = await http.get(Uri.parse(API.ProductApi));
 
@@ -37,7 +36,6 @@ class _ProductCardState extends State<ProductCard> {
         isLoading = false;
       });
     } else {
-    
       print('Failed to load items');
       setState(() {
         isLoading = false;
@@ -45,19 +43,17 @@ class _ProductCardState extends State<ProductCard> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const  Center( child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (items.isEmpty) {
-      return const  Center(child: Text('No items found'));
+      return const Center(child: Text('No items found'));
     }
 
     return GridView.count(
-
       crossAxisCount: 2,
       padding: const EdgeInsets.all(8.0),
       crossAxisSpacing: 8.0,
@@ -71,15 +67,35 @@ class _ProductCardState extends State<ProductCard> {
             imageUrl: item['image'].toString(),
             productName: item['item_name'],
             price: double.tryParse(item['price'].toString()) ?? 0.0,
-           
           ),
         );
       }),
     );
-    
   }
 }
 
+class ProductPage extends StatelessWidget {
+  const ProductPage({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: styles.superColor,
+        centerTitle: true,
+        title: const Text('Products  ',style : TextStyle(color: Colors.white),),
+      ),
+      body: const ProductCard(),
 
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
+    );
+  }
+}
 
+void main() {
+  runApp(
+    MaterialApp(
+      home: ProductPage(),
+    ),
+  );
+}

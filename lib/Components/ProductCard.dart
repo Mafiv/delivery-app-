@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import '../Constants/stylingConstants.dart' as Styles;
 
 class ShoppingCard extends StatelessWidget {
   final String imageUrl;
@@ -16,16 +19,24 @@ class ShoppingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Uint8List? imageBytes;
+    if (imageUrl.isNotEmpty) {
+      final header = 'data:image/jpeg;base64,';
+      final base64Image = imageUrl.replaceFirst(header, '');
+      imageBytes = base64Decode(base64Image);
+    }
+
     return Container(
-      height: 220,
+      height: 260,
       margin: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 5,
           ),
@@ -35,40 +46,42 @@ class ShoppingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 160, 
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(7),
-              child: Image.network(
-                imageUrl,
+            height: 160,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: imageBytes != null
+                    ? MemoryImage(imageBytes)
+                    : AssetImage('assets/placeholder.png') as ImageProvider,
                 fit: BoxFit.cover,
-                height: 160,
-                width: double.infinity,
               ),
             ),
           ),
-          const SizedBox(height: 10), 
+          const SizedBox(height: 10),
           Text(
             productName,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 34, 34, 34),
             ),
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 10), 
+          const SizedBox(height: 5),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '\$${price.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 18,
-                  color: Color.fromARGB(255, 118, 20, 133),
+                  color:Styles.superColor,
                 ),
               ),
               IconButton(
                 icon: const Icon(Icons.shopping_cart),
-                color: const Color.fromARGB(255, 78, 72, 61),
-                onPressed: onAddToCart ?? (){},
+                color: Color.fromARGB(255, 0, 0, 0),
+                onPressed: onAddToCart ?? () {},
               ),
             ],
           ),

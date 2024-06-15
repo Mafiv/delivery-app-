@@ -76,7 +76,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   void logout() {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.setDeliveryPersonName(newDeliveryPersonId: '');
+    // userProvider.setDeliveryPersonName(newDeliveryPersonId: '');
+    // userProvider.setDeliveryPersonId(newDeliveryPersonId: '');
   }
 
   void gotodetailPage(int ID) {
@@ -135,6 +136,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           if (success) {
             showErrorDialog(
                 context, 'Successful', 'item delivered successfully');
+            // Navigator.popAndPushNamed(context, "/showAllcustomerOrders");
             Navigator.pushNamed(context, '/showAllcustomerOrders');
 
             print('Order status updated successfully');
