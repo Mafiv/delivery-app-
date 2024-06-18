@@ -173,9 +173,9 @@ class _myHomePageState extends State<myHomePage> {
 
         // child: Products.ProductCard(),
         //  child:ShowAllProductsForAdmin.ProductPage(),
-         child:DeliveryPersonLogin.LoginPage(),
+        //  child:DeliveryPersonLogin.LoginPage(),
       ),
-      // bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
+      bottomNavigationBar: adminfooter.CustomBottomNavigationBar(),
 
       // bottomNavigationBar: footer.CustomBottomNavigationBar(),
     );
